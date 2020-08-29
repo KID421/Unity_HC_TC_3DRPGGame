@@ -3,6 +3,8 @@ ScriptsOnlyBuild:
     Assembly-CSharp.dll:
     - CameraControl
     - MenuManager
+    - NPC
+    - NPCData
     - Player
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
@@ -58,6 +60,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
     - Class: 84
       Script: {instanceID: 0}
     - Class: 89
@@ -85,13 +91,17 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11784}
     - Class: 114
-      Script: {instanceID: 12200}
+      Script: {instanceID: 11944}
     - Class: 114
-      Script: {instanceID: 12662}
+      Script: {instanceID: 11962}
     - Class: 114
-      Script: {instanceID: 13022}
+      Script: {instanceID: 12204}
     - Class: 114
-      Script: {instanceID: 38700}
+      Script: {instanceID: 12666}
+    - Class: 114
+      Script: {instanceID: 13026}
+    - Class: 114
+      Script: {instanceID: 13068}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -162,15 +172,15 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 11784}
     - Class: 114
-      Script: {instanceID: 12178}
+      Script: {instanceID: 12182}
     - Class: 114
-      Script: {instanceID: 12200}
+      Script: {instanceID: 12204}
     - Class: 114
-      Script: {instanceID: 12662}
+      Script: {instanceID: 12666}
     - Class: 114
-      Script: {instanceID: 12718}
+      Script: {instanceID: 12722}
     - Class: 114
-      Script: {instanceID: 13022}
+      Script: {instanceID: 13026}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -380,7 +390,7 @@ ScriptsOnlyBuild:
     className: AnimationPlayableAsset
   - hash:
       serializedVersion: 2
-      Hash: b1b298c98729f20461b41ffe3ed6c608
+      Hash: 99997a5238a0cd27aab9d146c8aaf44c
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Player
@@ -434,6 +444,12 @@ ScriptsOnlyBuild:
     className: Selectable
   - hash:
       serializedVersion: 2
+      Hash: 2a0c8a2487ebdd2c8629c15f0a8bb0cb
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: CameraControl
+  - hash:
+      serializedVersion: 2
       Hash: 4aac268d7e435f7a65add91aaba819a4
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
@@ -450,6 +466,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: UnityChan
     className: SpringManager
+  - hash:
+      serializedVersion: 2
+      Hash: c82cfc435fd5a717b2ca93f29ebdef44
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NPC
   - hash:
       serializedVersion: 2
       Hash: d4020bafcd3ccbb5601a6e6c8ac78be0
@@ -752,6 +774,12 @@ ScriptsOnlyBuild:
     className: Slider
   - hash:
       serializedVersion: 2
+      Hash: a936061365f607dda30f7ffa2def7c1f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: NPCData
+  - hash:
+      serializedVersion: 2
       Hash: 0fd6822f6177297bd0eb4d83cc7a9030
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -762,12 +790,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
-  - hash:
-      serializedVersion: 2
-      Hash: 2a0c8a2487ebdd2c8629c15f0a8bb0cb
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: CameraControl
   platform: 5
   scenePathNames:
   - "Assets/\u9078\u55AE.unity"

@@ -7,6 +7,15 @@ public class Player : MonoBehaviour
     public float speed = 1;
     [Header("旋轉速度"), Range(0, 1000)]
     public float turn = 60;
+    [Header("吃道具音效")]
+    public AudioClip soundProp;
+
+    // 在屬性面板上面隱藏
+    [HideInInspector]
+    /// <summary>
+    /// 停止不能移動
+    /// </summary>
+    public bool stop;
 
     private float attack = 10;
     private float hp = 100;
@@ -16,7 +25,9 @@ public class Player : MonoBehaviour
 
     private Rigidbody rig;
     private Animator ani;
+    private AudioSource aud;
     private Transform cam;  // 攝影機根物件
+    private NPC npc;
     #endregion
 
     #region 事件
@@ -26,12 +37,22 @@ public class Player : MonoBehaviour
         // 泛型：所有類型
         rig = GetComponent<Rigidbody>();
         ani = GetComponent<Animator>();
+        aud = GetComponent<AudioSource>();
         cam = GameObject.Find("攝影機根物件").transform;
+
+        npc = FindObjectOfType<NPC>();
     }
 
     private void FixedUpdate()
     {
+        if (stop) return;           // 如果 停止 跳出
+
         Move();
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "骷髏頭") GetProp(collision.gameObject);
     }
     #endregion
 
@@ -66,9 +87,15 @@ public class Player : MonoBehaviour
 
     }
 
-    private void GetProp()
+    /// <summary>
+    /// 取得道具
+    /// </summary>
+    /// <param name="prop">碰到的道具</param>
+    private void GetProp(GameObject prop)
     {
-
+        Destroy(prop);
+        aud.PlayOneShot(soundProp);
+        npc.UpdateTextMission();
     }
 
     private void Hit()
