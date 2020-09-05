@@ -13,10 +13,15 @@ public class Enemy : MonoBehaviour
     public float exp = 30;
     [Header("攻擊停止距離"), Range(0.1f, 3)]
     public float distanceAttack = 1.5f;
+    [Header("攻擊冷卻時間"), Range(0.1f, 5f)]
+    public float cd = 2.5f;
+    [Header("面向玩家的速度"), Range(0.1f, 50f)]
+    public float turn = 5f;
 
     private NavMeshAgent nav;   // 導覽代理器
     private Animator ani;       // 動畫控制器
     private Transform player;   // 玩家
+    private float timer;        // 計時器
 
     private void Awake()
     {
@@ -26,11 +31,21 @@ public class Enemy : MonoBehaviour
         nav.stoppingDistance = distanceAttack;      // 設定攻擊停止距離
 
         player = GameObject.Find("小明").transform;  // 取得玩家
+        nav.SetDestination(player.position);         // 避免一開始就偷打
     }
 
     private void Update()
     {
         Move();
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.name == "小明")
+        {
+            float range = Random.Range(-10f, 10f);                          // 隨機攻擊力 +-10
+            other.GetComponent<Player>().Hit(attack + range, transform);    // 對玩家造成傷害(攻擊力+隨機，變形)
+        }
     }
 
     private void OnDrawGizmos()
@@ -39,6 +54,9 @@ public class Enemy : MonoBehaviour
         Gizmos.DrawSphere(transform.position, distanceAttack);
     }
 
+    /// <summary>
+    /// 移動，判斷距離進入攻擊狀態
+    /// </summary>
     private void Move()
     {
         nav.SetDestination(player.position);                    // 追蹤玩家的座標
@@ -52,6 +70,15 @@ public class Enemy : MonoBehaviour
     /// </summary>
     private void Attack()
     {
-        ani.SetTrigger("攻擊觸發");
+        Quaternion look = Quaternion.LookRotation(player.position - transform.position);            // 面向角度 看向角度(玩家座標 - 自己座標)
+        transform.rotation = Quaternion.Slerp(transform.rotation, look, Time.deltaTime * turn);     // 角度 = 插值(角度，面向角度，速度)
+
+        timer += Time.deltaTime;            // 計時器累加
+
+        if (timer >= cd)                    // 如果計時器大於等於冷卻時間
+        {
+            timer = 0;                      // 計時器歸零
+            ani.SetTrigger("攻擊觸發");      // 攻擊
+        }
     }
 }
