@@ -17,6 +17,9 @@ public class Player : MonoBehaviour
     /// </summary>
     public bool stop;
 
+    [Header("傳送門：0 NPC，1 殭屍")]
+    public Transform[] doors;
+
     private float attack = 10;
     private float hp = 100;
     private float mp = 50;
@@ -54,9 +57,41 @@ public class Player : MonoBehaviour
     {
         if (collision.gameObject.tag == "骷髏頭") GetProp(collision.gameObject);
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.name == "傳送門 - NPC")
+        {
+            transform.position = doors[1].position;                         // 傳送到 殭屍
+            doors[1].GetComponent<CapsuleCollider>().enabled = false;       // 關閉殭屍傳送門碰撞
+            Invoke("OpenDoorZombie", 3);                                    // 三秒後開啟傳送門
+        }
+        if (other.name == "傳送門 - 殭屍")
+        {
+            transform.position = doors[0].position;                         // 傳送到 NPC
+            doors[0].GetComponent<CapsuleCollider>().enabled = false;       // 關閉 NPC 傳送門碰撞
+            Invoke("OpenDoorNPC", 3);                                       // 三秒後開啟傳送門
+        }
+    }
     #endregion
 
     #region 方法
+    /// <summary>
+    /// 開啟 NPC 傳送門碰撞
+    /// </summary>
+    private void OpenDoorNPC()
+    {
+        doors[0].GetComponent<CapsuleCollider>().enabled = true;
+    }
+
+    /// <summary>
+    /// 開啟殭屍傳送門碰撞
+    /// </summary>
+    private void OpenDoorZombie()
+    {
+        doors[1].GetComponent<CapsuleCollider>().enabled = true;
+    }
+
     /// <summary>
     /// 移動方法：前後左右移動與動畫
     /// </summary>

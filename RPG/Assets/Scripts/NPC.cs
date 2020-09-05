@@ -20,6 +20,8 @@ public class NPC : MonoBehaviour
     public RectTransform panelMission;
     [Header("任務數量")]
     public Text textMission;
+    [Header("傳送門")]
+    public GameObject[] doors;
 
     private AudioSource aud;
     private Animator ani;
@@ -113,6 +115,9 @@ public class NPC : MonoBehaviour
     {
         // 如果 數量 大於等於 NPC 需求數量 將狀態給改為任務完成
         if (count >= data.count) data._NPCState = NPCState.Finish;
+
+        // 迴圈執行 將所有傳送門顯示
+        for (int i = 0; i < doors.Length; i++) doors[i].SetActive(true);
     }
 
     /// <summary>
