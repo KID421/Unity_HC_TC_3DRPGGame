@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6a513bf84e790449abd8819a3559b29, type: 3}
   m_Name: "Unity \u91AC"
   m_EditorClassIdentifier: 
-  _NPCState: 0
-  count: 5
+  _NPCState: 1
+  count: 20
   dialogs:
   - "\u55E8\uFF0C\u53EF\u4EE5\u5E6B\u6211\u53D6\u5F97 20 \u500B\u9AB7\u9ACF\u982D\u55CE\uFF1F"
   - "\u4F60\u9084\u6C92\u5E6B\u6211\u53D6\u5F97 20 \u9846\u9AB7\u9ACF\u982D\u5462.."

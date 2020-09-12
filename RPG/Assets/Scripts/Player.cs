@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     public Image barHp;
     public Image barMp;
     public Image barExp;
+    public Text textLv;
     [Header("流星雨")]
     public Transform stone;
 
@@ -36,7 +37,11 @@ public class Player : MonoBehaviour
     private float mp = 50;
     private float maxMp = 50;
     private float exp;
+    private float maxExp = 100;             // 經驗值需求
     private int lv = 1;
+    private float restoreMp = 5;            // 回魔/秒
+
+    public float[] exps = new float[99];    // 經驗值需求表
 
     private Rigidbody rig;
     private Animator ani;
@@ -56,12 +61,16 @@ public class Player : MonoBehaviour
         cam = GameObject.Find("攝影機根物件").transform;
 
         npc = FindObjectOfType<NPC>();
+
+        // 迴圈輸入每一級需要的經驗值 每一級經驗需求 等於 等級 * 100
+        for (int i = 0; i < exps.Length; i++) exps[i] = 100 * (i + 1);
     }
 
     private void Update()
     {
         Attack();
         Skill();
+        RestoreMp();
     }
 
     private void FixedUpdate()
@@ -201,9 +210,49 @@ public class Player : MonoBehaviour
         enabled = false;                    // 關閉此腳本
     }
 
-    private void Exp()
+    /// <summary>
+    /// 經驗值
+    /// </summary>
+    /// <param name="getExp">獲得的經驗值</param>
+    public void Exp(float getExp)
     {
+        exp += getExp;
+        barExp.fillAmount = exp / maxExp;
 
+        while (exp >= maxExp && lv < exps.Length) LevelUp();           // 當 經驗值 >= 經驗值需求 並且 等級 < 經驗需求數量 就 持續升級
+    }
+
+    /// <summary>
+    /// 升級
+    /// </summary>
+    private void LevelUp()
+    {
+        lv++;                       // 等級遞增
+        maxHp += 10;                // 血量遞增
+        maxMp += 5;                 // 魔力遞增
+        attack += 10;               // 攻擊遞增
+        stoneDamage += 15;          // 技能遞增
+
+        hp = maxHp;                 // 恢復血量
+        mp = maxMp;                 // 恢復魔力
+        exp -= maxExp;              // 扣掉最大經驗值保留多餘的經驗值
+
+        maxExp = exps[lv - 1];      // 下一級最大經驗值
+
+        barHp.fillAmount = 1;               // 血條全滿
+        barMp.fillAmount = 1;               // 魔力全滿
+        barExp.fillAmount = exp / maxExp;   // 更新經驗值介面
+        textLv.text = "Lv " + lv;           // 更新等級介面
+    }
+
+    /// <summary>
+    /// 回魔
+    /// </summary>
+    private void RestoreMp()
+    {
+        mp += restoreMp * Time.deltaTime;       // 遞增恢復魔力
+        mp = Mathf.Clamp(mp, 0, maxMp);         // 夾住 0 - 最大值
+        barMp.fillAmount = mp / maxMp;          // 更新介面
     }
     #endregion
 }

@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
     public float attack = 40f;
     [Header("血量"), Range(200, 300)]
     public float hp = 200;
-    [Header("怪物的經驗值"), Range(30, 100)]
+    [Header("怪物的經驗值"), Range(30, 1000)]
     public float exp = 30;
     [Header("攻擊停止距離"), Range(0.1f, 3)]
     public float distanceAttack = 1.5f;
@@ -126,7 +126,8 @@ public class Enemy : MonoBehaviour
         GetComponent<CapsuleCollider>().enabled = false;    // 關閉碰撞器
         ani.SetBool("死亡開關", true);                       // 死亡動畫
         enabled = false;                                    // 關閉此腳本
-        nav.isStopped = true;
+        nav.isStopped = true;                               // 避免死亡後滑行
+        player.GetComponent<Player>().Exp(exp);             // 經驗值給玩家
 
         float r = Random.Range(0f, 1f);     // 隨機取得數值 0 ~ 1
 
