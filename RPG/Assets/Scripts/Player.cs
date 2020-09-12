@@ -24,11 +24,17 @@ public class Player : MonoBehaviour
     public Image barHp;
     public Image barMp;
     public Image barExp;
+    [Header("流星雨")]
+    public Transform stone;
 
-    private float attack = 10;
+    [HideInInspector]
+    public float stoneDamage = 200;     // 流星雨傷害值
+    private float stoneCost = 10;       // 流星雨消耗
+    private float attack = 30;
     private float hp = 100;
     private float maxHp = 100;
     private float mp = 50;
+    private float maxMp = 50;
     private float exp;
     private int lv = 1;
 
@@ -50,6 +56,12 @@ public class Player : MonoBehaviour
         cam = GameObject.Find("攝影機根物件").transform;
 
         npc = FindObjectOfType<NPC>();
+    }
+
+    private void Update()
+    {
+        Attack();
+        Skill();
     }
 
     private void FixedUpdate()
@@ -77,6 +89,12 @@ public class Player : MonoBehaviour
             transform.position = doors[0].position;                         // 傳送到 NPC
             doors[0].GetComponent<CapsuleCollider>().enabled = false;       // 關閉 NPC 傳送門碰撞
             Invoke("OpenDoorNPC", 3);                                       // 三秒後開啟傳送門
+        }
+
+        // 如果 碰到物件的標籤 等於 殭屍
+        if (other.tag == "殭屍")
+        {
+            other.GetComponent<Enemy>().Hit(attack, transform);
         }
     }
     #endregion
@@ -118,14 +136,32 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 攻擊
+    /// </summary>
     private void Attack()
     {
-
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            ani.SetTrigger("攻擊觸發");
+        }
     }
 
+    /// <summary>
+    /// 流星雨
+    /// </summary>
     private void Skill()
     {
-
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            if (stoneCost <= mp)                                                        // 如果 消耗量 <= 魔力
+            {
+                mp -= stoneCost;                                                        // 魔力 -= 消耗量
+                barMp.fillAmount = mp / maxMp;                                          // 更新介面
+                Vector3 pos = transform.forward * 2 + transform.up * 3.5f;
+                Instantiate(stone, transform.position + pos, transform.rotation);
+            }
+        }
     }
 
     /// <summary>
